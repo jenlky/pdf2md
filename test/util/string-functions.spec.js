@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 
-const { hasUpperCaseCharacterInMiddleOfWord, normalizedCharCodeArray, removeLeadingWhitespaces, removeTrailingWhitespaces, prefixAfterWhitespace, suffixBeforeWhitespace, charCodeArray, isListItem, isNumberedListItem, wordMatch } = require('../../lib/util/string-functions')
+const { hasUpperCaseCharacterInMiddleOfWord, normalizedCharCodeArray, removeLeadingWhitespaces, removeTrailingWhitespaces, prefixAfterWhitespace, suffixBeforeWhitespace, charCodeArray, isListItem, isNumberedListItem, wordMatch, extractNumHeader } = require('../../lib/util/string-functions')
 
 describe('functions: hasUpperCaseCharacterInMiddleOfWord', () => {
   it('single word', () => {
@@ -176,5 +176,19 @@ describe('functions: wordsMatch', () => {
     expect(wordMatch('text', 'test')).to.equal(0.0)
 
     expect(wordMatch('inStruCtionS for the full Moon proCeSS', 'Instructions for the Full Moon Process')).to.equal(1.0)
+  })
+})
+
+describe('functions: extractNumHeader', () => {
+  it('Extract numHeader', () => {
+    expect(extractNumHeader('Eintrag 1.2')).to.eql(['1', '2'])
+  })
+
+  it('Extract numHeader from a sentence', () => {
+    expect(extractNumHeader('Sub Eintrag 1.1, aber mit so langem Text, das er umbricht.')).to.eql(['1', '1'])
+  })
+
+  it('Extract numHeader with three or more layers from a sentence ', () => {
+    expect(extractNumHeader('3ter Level 1.1.2, aber mit so langem Text, das er umbricht.')).to.eql(['1', '1', '2'])
   })
 })
